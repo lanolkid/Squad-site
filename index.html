@@ -99,7 +99,7 @@
                         <div class="flex justify-between items-center">
                             <div class="flex items-center">
                                 <i class="fas fa-users text-gray-500 mr-2"></i>
-                                <span id="lanolkid-followers" class="text-gray-300">…</span>
+                                <span id="lanolkid-followers" class="text-gray-300">250</span>
                             </div>
                             <a href="https://www.twitch.tv/lanolkid" class="bg-[#6C44FC] hover:bg-[#5B3EE5] text-white px-4 py-2 rounded-lg transition flex items-center">
                                 <i class="fas fa-play mr-2"></i> Смотреть
@@ -312,24 +312,24 @@
             });
         });
 
-      async function getFollowersFromTwitchTracker(user, elSelector) {
-        try {
-          const res = await fetch(`https://corsproxy.io/?https://twitchtracker.com/${user}`);
-          const html = await res.text();
-    
-          const match = html.match(/Followers<\/div>\s*<div class="value">([\d,]+)/);
-          if (match) {
-            const followers = match[1].replace(/,/g, '');
-            document.querySelector(elSelector).textContent = followers;
+        async function setFollowers(user, selector){
+          const url   = `https://twitchtracker.com/api/channels/summary/${user}`;
+          const proxy = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`; // обход CORS
+          try{
+            const res   = await fetch(proxy);
+            const data  = await res.json();
+            const total = data.followers_total ?? data.followers ?? 0;
+            document.querySelector(selector).textContent = Number(total).toLocaleString('ru-RU');
+          }catch(err){
+            console.error('Followers fetch error', err);
+            const el = document.querySelector(selector);
+            if(el) el.textContent = '–';
           }
-        } catch (e) {
-          console.error("Ошибка загрузки фолловеров:", e);
         }
-      }
     
-      document.addEventListener("DOMContentLoaded", () => {
-        getFollowersFromTwitchTracker("lanolkid", "#lanolkid-followers");
-      });
+        document.addEventListener('DOMContentLoaded', () => {
+          setFollowers('lanolkid', '#lanolkid-followers');
+        });
     </script>
 </body>
 </html>
