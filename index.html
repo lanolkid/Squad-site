@@ -99,7 +99,7 @@
                         <div class="flex justify-between items-center">
                             <div class="flex items-center">
                                 <i class="fas fa-users text-gray-500 mr-2"></i>
-                                <span id="lanolkid-followers" class="text-gray-300">...</span>
+                                <span class="text-gray-300">248</span>
                             </div>
                             <a href="https://www.twitch.tv/lanolkid" class="bg-[#6C44FC] hover:bg-[#5B3EE5] text-white px-4 py-2 rounded-lg transition flex items-center">
                                 <i class="fas fa-play mr-2"></i> Смотреть
@@ -310,47 +310,6 @@
                     card.style.transition = 'transform 0.3s ease, box-shadow 0.3s ease';
                 });
             });
-        });
-
-        async function fetchSummary(user, retries = 2){
-          const url = `https://twitchtracker.com/api/channels/summary/${user}`;
-          const proxies = [
-            u => `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
-            u => `https://api.allorigins.win/get?url=${encodeURIComponent(u)}` // возвращает {contents: "..."}
-          ];
-          for(let attempt=0; attempt<proxies.length * (retries+1); attempt++){
-            const proxyFn = proxies[ attempt % proxies.length ];
-            try{
-              const res = await fetch(proxyFn(url),{cache:'no-store'});
-              if(!res.ok) throw new Error(res.status);
-              if(proxyFn === proxies[1]){
-                const wrap = await res.json();
-                return JSON.parse(wrap.contents || '{}');
-              }
-              return await res.json();
-            }catch(e){
-              if(attempt >= proxies.length * retries) throw e; // исчерпали попытки
-              await new Promise(r => setTimeout(r, 1000)); // маленькая пауза и повтор
-            }
-          }
-        }
-    
-        async function setFollowers(user, selector){
-          const el = document.querySelector(selector);
-          if(!el) return;
-          el.textContent = '…';
-          try{
-            const data = await fetchSummary(user, 1);
-            const total = data.followers_total ?? data.followers ?? 0;
-            el.textContent = Number(total).toLocaleString('ru-RU');
-          }catch(err){
-            console.error('Followers fetch failed', err);
-            el.textContent = '–';
-          }
-        }
-    
-        document.addEventListener('DOMContentLoaded', () => {
-          setFollowers('lanolkid', '#lanolkid-followers');
         });
     </script>
 </body>
