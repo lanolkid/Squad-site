@@ -311,6 +311,25 @@
                 });
             });
         });
+
+      async function getFollowersFromTwitchTracker(user, elSelector) {
+        try {
+          const res = await fetch(`https://corsproxy.io/?https://twitchtracker.com/${user}`);
+          const html = await res.text();
+    
+          const match = html.match(/Followers<\/div>\s*<div class="value">([\d,]+)/);
+          if (match) {
+            const followers = match[1].replace(/,/g, '');
+            document.querySelector(elSelector).textContent = followers;
+          }
+        } catch (e) {
+          console.error("Ошибка загрузки фолловеров:", e);
+        }
+      }
+    
+      document.addEventListener("DOMContentLoaded", () => {
+        getFollowersFromTwitchTracker("lanolkid", "#lanolkid-followers");
+      });
     </script>
 </body>
 </html>
