@@ -6,6 +6,45 @@
     <title>Stream Squad - Наша команда стримеров</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
+    <script>
+    const twitchUsers = ["lanolkid", "miqu", "northlilium", "karina_play"];
+    const proxy = "https://api.allorigins.win/raw?url=";
+
+    async function isLive(user) {
+      const url = proxy + encodeURIComponent(
+        `https://decapi.me/twitch/uptime/${user}`
+      );
+      try {
+        const text = await (await fetch(url, { cache: "no-store" })).text();
+        return !/offline/i.test(text.trim());
+      } catch {
+        return false;
+      }
+    }
+
+    async function update(user) {
+      const dot = document.getElementById(`dot-${user}`);
+      const txt = document.getElementById(`status-${user}`);
+      if (!dot || !txt) return;
+
+      if (await isLive(user)) {
+        dot.classList.add("live");
+        txt.textContent = "LIVE";
+      } else {
+        dot.classList.remove("live");
+        txt.textContent = "Offline";
+      }
+    }
+
+    function refreshStatuses() {
+      twitchUsers.forEach(update);
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      refreshStatuses();
+      setInterval(refreshStatuses, 60000);
+    });
+    </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap');
@@ -41,6 +80,14 @@
         
         .live-badge {
             animation: pulse 2s infinite;
+        }
+
+        .dot        { width:.55rem; height:.55rem; border-radius:9999px; background:#6B7280; transition:background .3s; }
+        .dot.live   { background:#EF4444; animation:pulse 2s infinite; }
+        @keyframes pulse {
+          0%   { box-shadow:0 0 0 0 rgba(239,68,68,.7); }
+          70%  { box-shadow:0 0 0 10px rgba(239,68,68,0); }
+          100% { box-shadow:0 0 0 0 rgba(239,68,68,0); }
         }
         
         @keyframes pulse {
@@ -94,6 +141,12 @@
                         <div class="flex justify-between items-start mb-4">
                             <div>
                                 <h3 class="text-2xl font-bold">Lanolkid</h3>
+
+                                <div class="flex items-center space-x-2">
+                                    <span class="dot" id="dot-lanolkid"></span>
+                                    <span class="text-xs" id="status-lanolkid">Проверяем…</span>
+                                </div>
+
                             </div>
                         </div>
                         <p class="text-gray-400 mb-6">
@@ -137,6 +190,11 @@
                         <div class="flex justify-between items-start mb-4">
                             <div>
                                 <h3 class="text-2xl font-bold">MiQu</h3>
+
+                                  <div class="flex items-center space-x-2">
+                                    <span class="dot" id="dot-lanolkid"></span>
+                                    <span class="text-xs" id="status-lanolkid">Проверяем…</span>
+                                </div>
                             </div>
                         </div>
                         <p class="text-gray-400 mb-6">
@@ -180,6 +238,11 @@
                         <div class="flex justify-between items-start mb-4">
                             <div>
                                 <h3 class="text-2xl font-bold">Northlilium</h3>
+                              
+                                <div class="flex items-center space-x-2">
+                                    <span class="dot" id="dot-northlilium"></span>
+                                    <span class="text-xs" id="status-northlilium">Проверяем…</span>
+                                </div>
                             </div>
                         </div>
                         <p class="text-gray-400 mb-6">
@@ -223,6 +286,11 @@
                         <div class="flex justify-between items-start mb-4">
                             <div>
                                 <h3 class="text-2xl font-bold">Karina Play</h3>
+
+                                <div class="flex items-center space-x-2">
+                                    <span class="dot" id="dot-lanolkid"></span>
+                                    <span class="text-xs" id="status-lanolkid">Проверяем…</span>
+                                </div>
                             </div>
                         </div>
                         <p class="text-gray-400 mb-6">
