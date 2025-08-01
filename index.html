@@ -15,18 +15,21 @@
             background-color: #000000;
             color: white;
         }
-        
+
         .streamer-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(108, 68, 252, 0.5);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(108, 68, 252, 0.3);
         }
         
+        .social-icon {
+           transition: transform 0.2s;
+        }
         .social-icon:hover {
-            transform: scale(1.2);
+           transform: scale(1.2);
         }
         
         .gradient-text {
-            background: #FFFFFF;
+            background: linear-gradient(to right, #A64DFF, #6C44FC);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
@@ -260,12 +263,12 @@
     <!-- Collaboration Section -->
     <section class="py-16 bg-[#6C44FC]">
         <div class="container mx-auto px-4 text-center">
-            <h2 class="text-3xl font-bold mb-6">Хочешь <span class="gradient-text">коллаборацию</span> с нами?</h2>
+            <h2 class="text-3xl font-bold mb-6">Хочешь коллаборацию с нами?</h2>
             <p class="text-xl text-white max-w-3xl mx-auto mb-8">
                 Мы открыты к сотрудничеству с брендами, другими стримерами и контент-мейкерами. 
                 Давайте создадим что-то крутое вместе!
             </p>
-            <a href="#" class="bg-gradient-to-r from-[#A64DFF] to-[#A64DFF] hover:from-[#5B3EE5] hover:to-[#5B3EE5] text-white px-8 py-4 rounded-full text-lg font-semibold transition inline-flex items-center">
+                <a href="#" class="bg-[#FFFFFF] hover:bg-[#5B3EE5] text-[#5B3EE5] px-8 py-4 rounded-full text-lg font-regular transition inline-flex items-center">
                 <i class="fas fa-envelope mr-2"></i> Связаться с нами
             </a>
         </div>
@@ -286,31 +289,5 @@
             </div>
         </div>
     </footer>
-
-    <script>
-        // Simple animation for live badges
-        document.addEventListener('DOMContentLoaded', function() {
-            const liveBadges = document.querySelectorAll('.live-badge');
-            
-            liveBadges.forEach(badge => {
-                setInterval(() => {
-                    badge.classList.toggle('opacity-90');
-                }, 1000);
-            });
-            
-            // Streamer card hover effect
-            const streamerCards = document.querySelectorAll('.streamer-card');
-            
-            streamerCards.forEach(card => {
-                card.addEventListener('mouseenter', () => {
-                    card.style.transition = 'transform 0.3s ease, box-shadow 0.3s ease';
-                });
-                
-                card.addEventListener('mouseleave', () => {
-                    card.style.transition = 'transform 0.3s ease, box-shadow 0.3s ease';
-                });
-            });
-        });
-    </script>
 </body>
 </html>
